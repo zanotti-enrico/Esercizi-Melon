@@ -18,9 +18,15 @@ public class AppDado {
             System.out.print("Digitare la propria scelta : ");
             //Richiesta di input dall'utente con controllo
             switch(keyboard.nextInt()) { //Controllo sull'input inserito dall'utente
-                case 1 : giocatoreVSGiocatore(keyboard); break;
-                case 2 : giocatoreVSComputer(keyboard); break;
-                case 3 : uscitaProgramma = true; //Uscire dal programma
+                case 1 : 
+                    keyboard.nextLine(); //Svuotare l'input dopo la lettura del numero
+                    giocatoreVSGiocatore(keyboard); 
+                    break;
+                case 2 : 
+                    keyboard.nextLine(); //Svuotare l'input dopo la lettura del numero
+                    giocatoreVSComputer(keyboard); 
+                    break;
+                case 3 : uscitaProgramma = true; break; //Uscire dal programma
                 
                 //Stampare messaggio di errore in caso di input non valido
                 default : System.out.println("Errore : il valore deve essere compreso nella lista.");
@@ -79,6 +85,11 @@ public class AppDado {
 
         //Ruotare il dado per il giocatore
         giocatore = RotazioneDado();
+
+        System.out.println("Gioco computer : ");
+        //Attendere un secondo prima di tirare
+        Wait(1000);
+
         //Ruotare il dado per il computer
         computer = RotazioneDado();
 
@@ -210,10 +221,12 @@ public class AppDado {
 
     /*Il metodo cancella lo schermo */
     private static void ClrScr(){
+        /*
         try {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        */
     }
 }
