@@ -224,12 +224,10 @@ public class AppDado {
 
     /*Il metodo cancella lo schermo */
     private static void ClrScr(){
-        /*
         try {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        */
     }
 }
