@@ -26,7 +26,10 @@ public class AppDado {
                     keyboard.nextLine(); //Svuotare l'input dopo la lettura del numero
                     giocatoreVSComputer(keyboard); 
                     break;
-                case 3 : uscitaProgramma = true; break; //Uscire dal programma
+                case 3 : 
+                    uscitaProgramma = true; 
+                    System.out.println("Uscita dal programma...");    
+                    break; //Uscire dal programma
                 
                 //Stampare messaggio di errore in caso di input non valido
                 default : System.out.println("Errore : il valore deve essere compreso nella lista.");
