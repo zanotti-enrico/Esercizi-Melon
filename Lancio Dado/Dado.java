@@ -114,7 +114,7 @@ public class Dado {
                 Wait();
                 ClrScr(); 
                 System.out.println("E' uscito : ");
-                output = faccia.nextInt(0, 6) + 1;
+                output = faccia.nextInt(6) + 1;
             } else {
                 Wait();
                 ClrScr(); 
