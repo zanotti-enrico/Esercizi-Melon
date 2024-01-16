@@ -15,7 +15,7 @@ public class Ruota {
         final int qtaRuote = 11;
 
         //Iterare le estrazioni per ognuna delle ruote e stampare il risultato
-        for(int ruotaCorrente = 0; ruotaCorrente < qtaRuote; ruotaCorrente++) {
+        for(int ruotaCorrente = 1; ruotaCorrente <= qtaRuote; ruotaCorrente++) {
             //Estrarre i numeri e salvarli in un array
             int[] estrazioni = estrarreNumeri(qtaEstrazioni, estrazioniInizio, estrazioniFine);   
 
@@ -52,6 +52,9 @@ public class Ruota {
                 else //Resettare la variabile ripetereEstrazione se era precedentemente vera
                     ripetereEstrazione = false;
             } while(ripetereEstrazione);
+            
+            //Salvare l'esito dell'estrazione nell'array di output
+            outputEstrazione[nEstrazione] = valoreCasualeCorrente;
         }
 
         //Ora che abbiamo popolato l'array con le estrazioni esso puo' essere ritornato
