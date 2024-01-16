@@ -7,23 +7,25 @@ import java.util.Random;
 
 public class Ruota {
     public static void main(String[] args) {
-        final int estrazioniInizio = 1; //Estrazioni bound minimo
-        final int estrazioniFine = 90; //Estrazioni bound massimo
+        final int estrazioniInizio = 1; //Inizio range estrazioni
+        final int estrazioniFine = 90; //Fine range estrazioni
         //Quantita' di estrazioni
         final int qtaEstrazioni = 5;
-        //Contiene le estrazioni eseguite
-        int[] estrazioni = new int[qtaEstrazioni];
+        //Quantita' di ruote da estrarre
+        final int qtaRuote = 11;
 
-        //Esecuzione delle estrazioni
-        for (int estrazione = 0; estrazione < qtaEstrazioni; estrazione++) {
-            //Salvare l'estrazione nell'array
-            estrazioni[estrazione] = valoreCasuale(estrazioniInizio, estrazioniFine);
+        //Iterare le estrazioni per ognuna delle ruote e stampare il risultato
+        for(int ruotaCorrente = 0; ruotaCorrente < qtaRuote; ruotaCorrente++) {
+            //Estrarre i numeri e salvarli in un array
+            int[] estrazioni = estrarreNumeri(qtaEstrazioni, estrazioniInizio, estrazioniFine);   
+
+            //Stampare in output il numero della ruota e il risultato delle estrazioni
+            System.out.println("Ruota estrazioni numero " + ruotaCorrente + " : ");
+            System.out.println("\nEsito Estrazioni : ");
+            for(int i = 0; i < estrazioni.length; i++)
+                System.out.println("\t" + i + " : " + estrazioni[i]);
+            System.out.println("\n");
         }
-
-        //Stampa delle estrazioni
-        System.out.println("Estrazioni Completate\nRisultati :");
-        for (int i = 0; i < qtaEstrazioni; i++)
-            System.out.println("Estrazione numero " + (i + 1) + " = " + estrazioni[i]);
     }
 
     /*Ritorna un array di valori corrispondenti alle estrazioni
