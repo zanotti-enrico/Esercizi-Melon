@@ -14,7 +14,7 @@ public class AppDado {
             "[3] Uscire dal programma"
         };
         //Salva la selezione dell'utente nel menu
-        int selezioneUtente;
+        int selezioneUtente = 0;
         //Variabili associate ai risultati di entrambi i giocatori
         int giocatore1;
         int giocatore2; //COMPUTER se viene selezionato giocatore contro computer
@@ -24,33 +24,36 @@ public class AppDado {
             //Visualizzare il menu salvando la selezione
             selezioneUtente = menu(contenutoMenu, keyboard);
 
-            if(selezioneUtente == 1)
-                System.out.print("Giocatore 1 - ");
-            System.out.println("Premere INVIO per lanciare il dado.");
+            //Se l'utente non ha selezionato l'opzione di uscita dal programma
+            if(selezioneUtente != 3) {
+                if(selezioneUtente == 1)
+                    System.out.print("Giocatore 1 - ");
+                System.out.println("Premere INVIO per lanciare il dado.");
 
-            //Attendere INVIO da parte dell'utente
-            keyboard.nextLine();
-            //Salvare il risultato della rotazione del dado
-            giocatore1 = RotazioneDado(); //giocatore1 sarebbe il giocatore
-
-            if(selezioneUtente == 1) //Se giocatore2 non e' il computer attendere un'altro INVIO dell'utente
-            {
-                System.out.println("Giocatore 2 - Premere INVIO per lanciare il dado");
+                //Attendere INVIO da parte dell'utente
                 keyboard.nextLine();
-            } else {
-                System.out.println("Gioco computer :");
-            }
-            //Effettuare una nuova rotazione salvando il risultato
-            giocatore2 = RotazioneDado();
+                //Salvare il risultato della rotazione del dado
+                giocatore1 = RotazioneDado(); //giocatore1 sarebbe il giocatore
 
-            //Stampare vincitore o parita'
-            if(giocatore1 == giocatore2)
-                System.out.println("Pari");
-            else 
-                if(giocatore1 > giocatore2)
-                    System.out.println("Vince giocatore 1");
-                else
-                    System.out.println("Vince giocatore 2");
+                if(selezioneUtente == 1) //Se giocatore2 non e' il computer attendere un'altro INVIO dell'utente
+                {
+                    System.out.println("Giocatore 2 - Premere INVIO per lanciare il dado");
+                    keyboard.nextLine();
+                } else {
+                    System.out.println("Gioco computer :");
+                }
+                //Effettuare una nuova rotazione salvando il risultato
+                giocatore2 = RotazioneDado();
+
+                //Stampare vincitore o parita'
+                if(giocatore1 == giocatore2)
+                    System.out.println("Pari");
+                else 
+                    if(giocatore1 > giocatore2)
+                        System.out.println("Vince giocatore 1");
+                    else
+                        System.out.println("Vince giocatore 2");
+            }
         //Ripetere fino a richiesta di fine programma
         } while(selezioneUtente != 3);
 
