@@ -41,6 +41,8 @@ public class AppDado {
                     keyboard.nextLine();
                 } else {
                     System.out.println("Gioco computer :");
+                    //Attendere un secondo per mostrare la scritta sullo schermo
+                    Wait(1000);
                 }
                 //Effettuare una nuova rotazione salvando il risultato
                 giocatore2 = RotazioneDado();
@@ -50,9 +52,19 @@ public class AppDado {
                     System.out.println("Pari");
                 else 
                     if(giocatore1 > giocatore2)
-                        System.out.println("Vince giocatore 1");
+                    {
+                        if(selezioneUtente == 1)
+                            System.out.println("Vince giocatore 1");
+                        else
+                            System.out.println("Vince il giocatore");
+                    }
                     else
-                        System.out.println("Vince giocatore 2");
+                    {
+                        if(selezioneUtente == 1)    
+                            System.out.println("Vince giocatore 2");
+                        else
+                            System.out.println("Vince il computer");
+                    }
             }
         //Ripetere fino a richiesta di fine programma
         } while(selezioneUtente != 3);
