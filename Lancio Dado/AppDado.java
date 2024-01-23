@@ -13,22 +13,46 @@ public class AppDado {
             "[2] Giocatore contro computer",
             "[3] Uscire dal programma"
         };
-        //Viene impostata a vero all'uscita dal programma
-        boolean uscitaProgramma = false;
-
+        //Salva la selezione dell'utente nel menu
+        int selezioneUtente;
         //Variabili associate ai risultati di entrambi i giocatori
         int giocatore1;
-        int giocatore2;
-
-        do {
-            int selezioneUtente = menu(contenutoMenu, keyboard);
-
-            if(selezioneUtente == 1)
-                System.out.println("Premere");
-
+        int giocatore2; //COMPUTER se viene selezionato giocatore contro computer
 
         //Ripetere fino a richiesta di fine programma
-        } while(!uscitaProgramma);
+        do {
+            //Visualizzare il menu salvando la selezione
+            selezioneUtente = menu(contenutoMenu, keyboard);
+
+            if(selezioneUtente == 1)
+                System.out.print("Giocatore 1 - ");
+            System.out.println("Premere INVIO per lanciare il dado.");
+
+            //Attendere INVIO da parte dell'utente
+            keyboard.nextLine();
+            //Salvare il risultato della rotazione del dado
+            giocatore1 = RotazioneDado(); //giocatore1 sarebbe il giocatore
+
+            if(selezioneUtente == 1) //Se giocatore2 non e' il computer attendere un'altro INVIO dell'utente
+            {
+                System.out.println("Giocatore 2 - Premere INVIO per lanciare il dado");
+                keyboard.nextLine();
+            } else {
+                System.out.println("Gioco computer :");
+            }
+            //Effettuare una nuova rotazione salvando il risultato
+            giocatore2 = RotazioneDado();
+
+            //Stampare vincitore o parita'
+            if(giocatore1 == giocatore2)
+                System.out.println("Pari");
+            else 
+                if(giocatore1 > giocatore2)
+                    System.out.println("Vince giocatore 1");
+                else
+                    System.out.println("Vince giocatore 2");
+        //Ripetere fino a richiesta di fine programma
+        } while(selezioneUtente != 3);
 
         keyboard.close();
     }
