@@ -23,24 +23,53 @@ public class LottoEstrazioni {
         int selezione = 0;
 
         //Contiene le estrazioni della ruota di Venezia
-        int[] estrazioniRuota = new int[estrazioni];
+        int[] estrazioniRuota = null;
         int[] estrazioniUtente = new int[estrazioni];
 
+        //Contiene se l'estrazione del giocatore e della ruota di venezia sono state eseguite
+        /*Questo viene fatto per impedire l'utente o la ruota di estrarre
+         * piu' volte o di visualizzare i valori della ruota prima dell'estrazione
+         */
+        boolean estrazioneRuotaEseguita = false;
+        boolean estrazioneUtenteEseguita = false;
+
         do {
+            ClrScr();
+            
             //Stampare il menu
             selezione = menu(contenutoMenu, keyboard);
-
-            ClrScr();
 
             //Controllo sul valore inserito
             switch(selezione) {
                 case 1 : { //Estrazioni ruota di venezia
+                    //Impedire multiple estrazioni della ruota
+                    if(estrazioneRuotaEseguita)
+                    {
+                        System.out.println("Errore : l'estrazione della ruota puo' essere eseguita una sola volta.\nPremere INVIO per continuare.");
+                        keyboard.nextLine();
+                        break;
+                    }
+
                     //Generare le estrazioni per la ruota
                     estrazioniRuota = valoreCasualeArray(estrazioni, minimoEstrazioni, massimoEstrazioni);
+                    //Salvare l'estrazione della ruota compiuta nella rispettiva variabile globale
+                    estrazioneRuotaEseguita = true;
+
+                    System.out.println("Estrazioni eseguite. Premere INVIO per continuare...");
+                    keyboard.nextLine();
+
                     break;
                 }
 
                 case 2 : { //Giocata utente
+                    //Impedire multiple puntate dell'utente
+                    if(estrazioneUtenteEseguita)
+                    {
+                        System.out.println("Errore : la puntata dell'utente puo' essere eseguita una sola volta.\nPremere INVIO per continuare.");
+                        keyboard.nextLine();
+                        break;
+                    }
+
                     System.out.println("Puntare i cinque numeri per la ruota\n");
 
                     //Il valore inserito dall'utente all'interno del ciclo di for
@@ -60,6 +89,9 @@ public class LottoEstrazioni {
                                 System.out.println("Errore : i valori delle estrazioni non possono ripetersi.");
                                 //Impostando la variabile a falso il ciclo while si ripete
                                 continuareInserimento = false;
+                            } else if(valoreInserito < minimoEstrazioni || valoreInserito > massimoEstrazioni) { //Nel caso l'utente inserisca un valore fuori range
+                                System.out.println("Errore : Il valore inserito deve essere compreso tra " + minimoEstrazioni + " e " + massimoEstrazioni + " per le estrazioni");
+                                continuareInserimento = false;
                             //Se il valore inserito non si trova nell'array allora reimpostare la variabile per la terminazione dell'inserimento
                             } else continuareInserimento = true;
                         //Se un numero inserito non e' valido ripetere l'inserimento
@@ -69,11 +101,23 @@ public class LottoEstrazioni {
                         estrazioniUtente[estrazioneCorrente] = valoreInserito;
                     }
 
-                    System.out.println("Estrazioni completate");
+                    //Salvare l'esecuzione del puntamento dell'utente nella rispettiva variabile
+                    estrazioneUtenteEseguita = true;
+
+                    System.out.println("Puntate completate");
                     break;
                 }
 
                 case 3 : { //Verifica vincita
+                    //Impedire la ricerca delle vincite nel caso l'utente non abbia puntato o la ruota non abbia estratto
+                    if(!estrazioneUtenteEseguita || !estrazioneRuotaEseguita)
+                    {
+                        System.out.println("Errore : Per la visualizzazione delle vincite sia utente che ruota devono aver estratto.");
+                        System.out.println("Premere INVIO per continuare");
+                        keyboard.nextLine();
+                        break;
+                    }
+
                     //Contiene il numero di estrazioni dell'utente che sono presenti all'interno della ruota
                     int estrazioniUtenteCorrette = nPresentiInArray(estrazioniRuota, estrazioniUtente);
 
@@ -84,38 +128,49 @@ public class LottoEstrazioni {
                         case 1 : 
                             System.out.println("Nessuna vincita."); break;
 
-                        case 2 : System.out.println("Vincita : terna"); break;
-                        case 3 : System.out.println("Vincita : quaterna");break;
-                        case 4 : System.out.println("Vincita : cinquina");break;
-                        case 5 : System.out.println("Vincita : quaterna");break;
+                        case 2 : System.out.println("Vincita : ambo"); break;
+                        case 3 : System.out.println("Vincita : terna");break;
+                        case 4 : System.out.println("Vincita : quaterna");break;
+                        case 5 : System.out.println("Vincita : cinquina");break;
                     }
+
+                    //Attendere per dare il tempo all'utente di leggere
+                    System.out.println("Premere INVIO per continuare."); 
+                    keyboard.nextLine();
+
+                    break;
                 }
 
                 case 4 : { //Visualizza giocate
+                    //Impedire la visualizzazione delle giocate nel caso l'utente o la ruota non abbiano estratto
+                    if(!estrazioneUtenteEseguita || !estrazioneRuotaEseguita)
+                    {
+                        System.out.println("Errore : Per la visualizzazione delle giocate sia utente che ruota devono aver estratto.");
+                        System.out.println("Premere INVIO per continuare");
+                        keyboard.nextLine();
+                        break;
+                    }
+
                     System.out.println("Visualizzazione delle giocate: ");
 
-                    System.out.println("Estrazioni ruota di Venezia: ");
+                    System.out.println("\nEstrazioni ruota di Venezia: ");
                     //Visualizzare il contenuto degli array delle estrazioni
                     for(int estrazioneCorrente = 0; estrazioneCorrente < estrazioni; estrazioneCorrente++)
                         System.out.println((estrazioneCorrente + 1) + ": " + estrazioniRuota[estrazioneCorrente]);
 
-                    System.out.println("Estrazioni utente: ");
+                    System.out.println("\nEstrazioni utente: ");
                     //Visualizzare il contenuto degli array delle estrazioni
                     for(int estrazioneCorrente = 0; estrazioneCorrente < estrazioni; estrazioneCorrente++)
                         System.out.println((estrazioneCorrente + 1) + ": " + estrazioniUtente[estrazioneCorrente]);
+
+                    //Attendere per dare il tempo all'utente di leggere
+                    System.out.println("\nPremere INVIO per continuare."); 
+                    keyboard.nextLine();
+
+                    break;
                 }
             }
-        } while(selezione != 5);
-
-        /*Necessario per Giocata utente :
-         * Array di 5 elementi contenente i numeri inseriti
-         * Controllo dei numeri inseriti per evitare che si ripetano
-         * Controllo che i numeri inseriti si trovino sulla ruota di Venezia
-        */
-
-        /*Necessario per Visualizza giocate :
-         * Menu che chiede se visualizzare le giocate di Venezia o del giocatore
-        */
+        } while(selezione != 5); //Se l'utente inserisce 5 allora uscire
     }
 
     /*Stampa e gestisce a schermo un menu, ritornando il valore selezionato dall'utente */
@@ -135,9 +190,6 @@ public class LottoEstrazioni {
 
             //Ricevere l'input dall'utente
             selezione = keyboard.nextInt();
-
-            //Cancellare lo schermo
-            ClrScr();
 
             //Controllo errori
             if(selezione <= 0 || selezione > opzioni.length - 1) { //Stampare il messaggio di errore e attendere
@@ -189,7 +241,7 @@ public class LottoEstrazioni {
             //Ripetere l'estrazione nel caso il numero estratto sia presente nell'array
             do {
                 numeroCorrente = generatore.nextInt(minimo, massimo + 1);
-            } while(!valorePresenteInArray(output, numeroCorrente, iteratore));
+            } while(valorePresenteInArray(output, numeroCorrente, iteratore));
 
             //Quando il numero generato non si trova nell'array allora salvarlo nell'array di uscita
             output[iteratore] = numeroCorrente;
@@ -235,7 +287,7 @@ public class LottoEstrazioni {
         //Effettua una ricerca che si termina se trova il numero nell'array
         for(int ricerca = 0; ricerca < termineRicerca && ricerca < array.length && !presente; ricerca++)
             if(array[ricerca] == valore)
-                presente = false;
+                presente = true;
 
         //Ritorna l'esito della ricerca
         return presente;
