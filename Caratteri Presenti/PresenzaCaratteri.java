@@ -33,5 +33,8 @@ public class PresenzaCaratteri {
             if(usedLetters[letterIterator])
                 System.out.println("Lettera " + (char)(letterIterator + 64) + " utilizzata.");
         }
+
+        //Avoid memory leak
+        keyboard.close();
     }
 }
