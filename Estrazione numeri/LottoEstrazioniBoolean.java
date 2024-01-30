@@ -1,8 +1,9 @@
 import java.util.Scanner;
 import java.util.Random;
 
-public class LottoEstrazioni {
+public class LottoEstrazioniBoolean {
     public static void main(String[] args) {
+        //Istanziamento dello scanner
         Scanner keyboard = new Scanner(System.in);
 
         //Numero estrazioni
@@ -17,8 +18,8 @@ public class LottoEstrazioni {
             "[2] : Giocata utente", //Il giocatore punta cinque numeri sulla ruota di Venezia
             "[3] : Verifica vincita", //Verificare la vincita del giocatore
             "[4] : Visualizza Giocate", //Visualizzare i numeri risultati durante le giocate
-            "[5] : Esci",
-            "[6] : Reset" //Reimposta il programma
+            "[5] : Reset", //Reimposta il programma
+            "[6] : Esci"
         };
         //Contiene la selezione dell'utente
         int selezione = 0;
@@ -26,6 +27,8 @@ public class LottoEstrazioni {
         //Contiene le estrazioni della ruota di Venezia
         int[] estrazioniRuota = null;
         int[] estrazioniUtente = new int[estrazioni];
+        //Array utilizzato per il controllo se il valore inserito dall'utente si trova gia' nell'array
+        boolean[] controlloEstrazioniUtente = new boolean[massimoEstrazioni - minimoEstrazioni];
 
         //Contiene se l'estrazione del giocatore e della ruota di venezia sono state eseguite
         /*Questo viene fatto per impedire l'utente o la ruota di estrarre
@@ -35,6 +38,7 @@ public class LottoEstrazioni {
         boolean estrazioneUtenteEseguita = false;
 
         do {
+            //Cancellare lo schermo
             ClrScr();
             
             //Stampare il menu
@@ -76,25 +80,37 @@ public class LottoEstrazioni {
                     //Il valore inserito dall'utente all'interno del ciclo di for
                     int valoreInserito;
                     //Se il valore inserito dall'utente si trova gia' nell'array questa variabile viene impostata a falsa
-                    boolean continuareInserimento = true;
+                    boolean continuareInserimento;
+
                     //Riempire l'array delle estrazioni dell'utente con i numeri richiesti
                     for (int estrazioneCorrente = 0; estrazioneCorrente < estrazioni; estrazioneCorrente++) {
                         do {
+                            //Reimpostare ad ogni iterazione la variabile per continuare l'inserimento
+                            continuareInserimento = true;
+
                             System.out.print("Estrazione " + estrazioneCorrente + ": ");
                             //Salvare nella variabile locale il valore inserito dall'utente
                             valoreInserito = keyboard.nextInt();
 
-                            //Se il valore inserito si trova gia' nell'array allora stampare un messaggio di errore e non permettere un nuovo inserimento
-                            if(valorePresenteInArray(estrazioniUtente, valoreInserito, estrazioneCorrente))
-                            {
-                                System.out.println("Errore : i valori delle estrazioni non possono ripetersi.");
-                                //Impostando la variabile a falso il ciclo while si ripete
-                                continuareInserimento = false;
-                            } else if(valoreInserito < minimoEstrazioni || valoreInserito > massimoEstrazioni) { //Nel caso l'utente inserisca un valore fuori range
+                            //Nel caso l'utente inserisca un valore fuori range
+                            if(valoreInserito < minimoEstrazioni || valoreInserito > massimoEstrazioni) { 
                                 System.out.println("Errore : Il valore inserito deve essere compreso tra " + minimoEstrazioni + " e " + massimoEstrazioni + " per le estrazioni");
                                 continuareInserimento = false;
-                            //Se il valore inserito non si trova nell'array allora reimpostare la variabile per la terminazione dell'inserimento
-                            } else continuareInserimento = true;
+                            }
+                            
+                            //Eseguire questo controllo soltanto se il numero inserito si trova nel range corretto
+                            if(continuareInserimento) {
+                                //Se secondo l'array di booleane il valore si trova gia' nell'array allora ripetere l'estrazione
+                                if(controlloEstrazioniUtente[valoreInserito - minimoEstrazioni])
+                                {
+                                    System.out.println("Errore : i valori delle estrazioni non possono ripetersi.");
+                                    //Impostando la variabile a falso il ciclo while si ripete
+                                    continuareInserimento = false;
+                                } else { //Se il valore non era presente:
+                                    //Impostare il valore nell'array di booleane a vero in modo ceh non possa essere reinserito nuovamente
+                                    controlloEstrazioniUtente[valoreInserito - minimoEstrazioni] = true;
+                                }
+                            }
                         //Se un numero inserito non e' valido ripetere l'inserimento
                         } while(!continuareInserimento);
 
@@ -171,7 +187,7 @@ public class LottoEstrazioni {
                     break;
                 }
 
-                case 6 : { //Reimpostare il programma
+                case 5 : { //Reimpostare il programma
                     //Reimpostare le variabili
                     estrazioneRuotaEseguita = false;
                     estrazioneUtenteEseguita = false;
@@ -187,7 +203,7 @@ public class LottoEstrazioni {
                     break;
                 }
             }
-        } while(selezione != 5); //Se l'utente inserisce 5 allora uscire
+        } while(selezione != 6); //Se l'utente inserisce 5 allora uscire
     }
 
     /*Stampa e gestisce a schermo un menu, ritornando il valore selezionato dall'utente */
@@ -197,7 +213,6 @@ public class LottoEstrazioni {
 
         //Controllo sull'input ricevuto dall'utente
         do {
-
             //Stampare titolo e opzioni su schermo
             System.out.println("=== " + opzioni[0] + " ===\n");
             for (int iteratoreOpzioni = 1; iteratoreOpzioni < opzioni.length; iteratoreOpzioni++)
@@ -249,16 +264,37 @@ public class LottoEstrazioni {
         Random generatore = new Random();
         //Array di output
         int[] output = new int[qta];
+        //Contiene delle variabili booleane utilizzate per sapere se i numeri sono gia' presenti nell'array
+        boolean[] controlloOutput = new boolean[massimo - minimo];
         //Numero corrente generato
         int numeroCorrente;
+
+        //Inizializzazione dell'array di variabili booleane a false
+        for(int iteratoreInizializzazione = 0; iteratoreInizializzazione < controlloOutput.length; iteratoreInizializzazione++)
+            controlloOutput[iteratoreInizializzazione] = false;
 
         //Iterazione generazione numeri casuali
         for(int iteratore = 0; iteratore < qta; iteratore++)
         {
+            //Viene impostato a vero se il valore era presente nell'array precedentemente
+            boolean ripetereGenerazione = false;
+
             //Ripetere l'estrazione nel caso il numero estratto sia presente nell'array
             do {
                 numeroCorrente = generatore.nextInt(minimo, massimo + 1);
-            } while(valorePresenteInArray(output, numeroCorrente, iteratore));
+
+                //Se il valore si trova nell'array eseguire nuovamente il ciclo
+                if(controlloOutput[numeroCorrente - minimo])
+                    ripetereGenerazione = true;
+                else {
+                    /*Se il valore non e' presente reimpostare la variabile per eseguire nuovamente il ciclo while
+                     * e salvare nell'array di booleane il valore presente in modo che non possa comparire nuovamente
+                     */
+                    ripetereGenerazione = false;
+                    controlloOutput[numeroCorrente - minimo] = true;
+                }
+            //Continuare a ripetere fino a quando la variabile ripetereGenerazione diventa falsa
+            } while(ripetereGenerazione);
 
             //Quando il numero generato non si trova nell'array allora salvarlo nell'array di uscita
             output[iteratore] = numeroCorrente;
@@ -279,6 +315,7 @@ public class LottoEstrazioni {
 
         //Iterare per ogni elemento del primo array alla ricerca di un elemento uguale nel secondo array
         for(int ricercaPrimoArray = 0; ricercaPrimoArray < primoArray.length; ricercaPrimoArray++) {
+            //Impostato a vero quando un valore uguale viene trovato tra i due array
             valoreUgualeTrovato = false;
 
             //Iterare nel secondo array fino a quando un valore uguale tra i due non viene trovato o l'array si termina
@@ -292,21 +329,5 @@ public class LottoEstrazioni {
         }
 
         return contatoreElementiPresenti;
-    }
-
-    /*Controlla se un valore si trova all'interno di un array 
-     * termina la ricerca al raggiungimento dell'indice termineRicerca o al termine dell'array
-    */
-    private static boolean valorePresenteInArray (int[] array, int valore, int termineRicerca) {
-        //Presuppone che il numero non sia presente nell'array
-        boolean presente = false;
-
-        //Effettua una ricerca che si termina se trova il numero nell'array
-        for(int ricerca = 0; ricerca < termineRicerca && ricerca < array.length && !presente; ricerca++)
-            if(array[ricerca] == valore)
-                presente = true;
-
-        //Ritorna l'esito della ricerca
-        return presente;
     }
 }
