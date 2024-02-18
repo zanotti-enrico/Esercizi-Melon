@@ -1,4 +1,4 @@
-public class Esercizio2 {
+public class TreConsecutivi {
     public static void main(String[] args) {
         //The array which the program uses to check for consecutive values
         int[] input = {45, 54, 14, 13, 12, 65, 33, 33, 33, 34, 15, 19};
@@ -25,8 +25,8 @@ public class Esercizio2 {
         }
 
         if(consecutives >= 3)   
-            System.out.println("3 Valori consecutivi trovati.");
+            System.out.println("Tre valori consecutivi uguali");
         else
-            System.out.println("Non sono stati trovati 3 valori consecutivi.");
+            System.out.println("NO");
     }
 }
