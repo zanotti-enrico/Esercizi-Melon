@@ -12,6 +12,8 @@ public class Rubrica {
             "Modifica tipologia telefono",
             "Elimina contatto",
             "Ordina contatti",
+            "Effettua ricarica",
+            "Effettua chiamata",
             "Uscita"
         };
         //Contiene i contatti
@@ -70,6 +72,16 @@ public class Rubrica {
                 case 6 : {
                     //Richiedere all'utente l'ordinamento dei contatti
                     ordinamentoContatti(rubrica, rubricaOccupied, keyboard);
+                    break;
+                }
+                //Se l'utente ha richiesto la ricarica
+                case 7 : {
+                    ricarica(rubrica, rubricaOccupied, keyboard);
+                    break;
+                }
+                //Se l'utente ha richiesto la chiamata
+                case 8 : {
+                    effettuaChiamata(rubrica, rubricaOccupied, keyboard);
                     break;
                 }
 
@@ -247,7 +259,7 @@ public class Rubrica {
                     System.out.println("Inserire il nuovo numero di telefono :");
                     String nuovoTelefono = keyboard.nextLine();
                     //Impostare il nuovo numero di telefono nella rubrica
-                    rubrica[contactNumber - 1].numeroTelefono = nuovoTelefono;
+                    rubrica[contactNumber - 1].setNumeroTelefono(nuovoTelefono);
                 } else if(mode == 1) //Se la modalita' specificata e' quella di modifica della tipologia del numero di telefono 
                 {
                     //Richiedere l'inserimento della tipologia del numero di telefono
@@ -357,5 +369,110 @@ public class Rubrica {
 
         //Ritornare il nuovo valore di rubricaOccupied
         return rubricaOccupied;
+    }
+
+    /*Il metodo richiede all'utente quanti soldi inserire nel contatto ed effettua una ricarica sul contatto determinato 
+     * La modifica viene fatta direttamente sull'array di uscita
+    */
+    private static void ricarica(Contatto[] rubrica, int rubricaOccupied, Scanner keyboard) {
+        int numeroUtente = 0;
+        boolean numeroContattoInserito = false;
+        do {
+            //Richiedere all'utente il numero di contatto
+            numeroUtente = Tools.getUserInput(0, rubricaOccupied, "(Inserire 0 per mostrare tutti i contatti)\nInserire il numero del contatto a cui effettuare la ricarica : ", keyboard, true, true);
+            //Se il numero inserito e' nullo allora stampare tutti i contatti
+            if(numeroUtente == 0)
+            {
+                System.out.println("Stampa di tutti i contatti salvati :");
+                //Iterare in tutti i contatti per iterare
+                for(int contatto = 0; contatto < rubricaOccupied; contatto++)
+                    System.out.println("=== Contatto numero " + (contatto + 1) + " ===\n" + rubrica[contatto].anagrafica());
+                System.out.println("=== TERMINE LISTA ===");
+            } else numeroContattoInserito = true; //Altrimenti uscire dal ciclo
+        } while(!numeroContattoInserito);
+
+        //Richiedere all'utente il valore di ricarica
+        double ricarica = 0;
+        boolean valoreErrato = false;
+        do {
+            valoreErrato = false;
+
+            System.out.println("Credito corrente : " + rubrica[numeroUtente - 1].getSaldo() + " Euro");
+            System.out.println("Inserire il valore di ricarica : ");
+            //Controllo errori per l'inserimento di soltanto numeri
+            try {
+                ricarica = keyboard.nextDouble();
+            } catch (Exception exception) {
+                System.out.println("Inserire un numero valido");
+                valoreErrato = true;
+            }
+            
+            //Cancellare il buffer dopo la lettura di un numero
+            keyboard.nextLine();
+
+            //Proseguire con il controllo soltanto se il valore inserito non era errato
+            if(!valoreErrato && ricarica < 0)
+            {
+                valoreErrato = true;
+                System.out.println("Errore : il valore di ricarica deve essere positivo");
+            }
+        } while(valoreErrato);
+        //Incrementare il saldo di quel valore
+        rubrica[numeroUtente - 1].ricaricaSaldo(ricarica);
+    }
+    
+    /*Il metodo richiede all'utente il credito di spesa nella chiamata mostrando anche quello rimasto e il credito
+     * effettivamente speso tenendo cont di quello rimasto.
+    */
+    private static void effettuaChiamata(Contatto[] rubrica, int rubricaOccupied, Scanner keyboard) {
+        int numeroUtente = 0;
+        boolean numeroContattoInserito = false;
+        do {
+            //Richiedere all'utente il numero di contatto
+            numeroUtente = Tools.getUserInput(0, rubricaOccupied, "(Inserire 0 per mostrare tutti i contatti)\nInserire il numero del contatto a cui effettuare la ricarica : ", keyboard, true, true);
+            //Se il numero inserito e' nullo allora stampare tutti i contatti
+            if(numeroUtente == 0)
+            {
+                System.out.println("Stampa di tutti i contatti salvati :");
+                //Iterare in tutti i contatti per iterare
+                for(int contatto = 0; contatto < rubricaOccupied; contatto++)
+                    System.out.println("=== Contatto numero " + (contatto + 1) + " ===\n" + rubrica[contatto].anagrafica());
+                System.out.println("=== TERMINE LISTA ===");
+            } else numeroContattoInserito = true; //Altrimenti uscire dal ciclo
+        } while(!numeroContattoInserito);
+
+        //Richiedere all'utente il valore di spesa
+        double spesa = 0;
+        boolean valoreErrato = false;
+        do {
+            valoreErrato = false;
+
+            System.out.println("Credito corrente : " + rubrica[numeroUtente - 1].getSaldo() + " Euro");
+            System.out.println("Inserire la spesa della chiamata : ");
+            //Controllo errori per l'inserimento di soltanto numeri
+            try {
+                spesa = keyboard.nextDouble();
+            } catch (Exception exception) {
+                System.out.println("Inserire un numero valido");
+                valoreErrato = true;
+            }
+
+            //Cancellare il buffer dopo la lettura di un numero
+            keyboard.nextLine();
+
+            //Proseguire con il controllo soltanto se il valore inserito non era errato
+            if(!valoreErrato && spesa < 0)
+            {
+                valoreErrato = true;
+                System.out.println("Errore : il valore di ricarica deve essere positivo");
+            }
+        } while(valoreErrato);
+        //Effettuare la spesa
+        double quantitaSpesa = rubrica[numeroUtente - 1].effettuaSpesa(spesa);
+        //Mostrare all'utente la quantita' di soldi effettivamente spesi
+        System.out.println("Soldi spesi : " + quantitaSpesa + " Euro");
+        //Attendere per dare il tempo all'utente di visualizzare i dati
+        System.out.println("Premere INVIO per continuare");
+        keyboard.nextLine();
     }
 }

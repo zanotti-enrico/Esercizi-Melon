@@ -8,10 +8,67 @@ enum tipologiaTelefono {
 };
 
 public class Contatto {
-    public String nome; //Nome della persona
-    public String cognome; //Cognome della persona
-    public String numeroTelefono; //Numero di telefono
-    tipologiaTelefono utilizzo; //Tipo del numero di telefono
+    protected String nome; //Nome della persona
+    protected String cognome; //Cognome della persona
+    protected String numeroTelefono; //Numero di telefono
+    protected tipologiaTelefono utilizzo; //Tipo del numero di telefono
+    protected double saldo = 0; //Saldo telefonico del contatto
+
+    //Metodi per la modifica e l'accesso ai parametri del contatto
+    public String getNome() {
+        return this.nome;
+    }
+    public String getCognome() {
+        return this.cognome;
+    }
+    public String getNumeroTelefono() {
+        return this.numeroTelefono;
+    }
+    public tipologiaTelefono getUtilizzo() {
+        return this.utilizzo;
+    }
+    public double getSaldo() {
+        return this.saldo;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+    public void setCognome(String cognome) {
+        this.cognome = cognome;
+    }
+    public void setNumeroTelefono(String numeroTelefono) {
+        this.numeroTelefono = numeroTelefono;
+    }
+    public void setUtilizzo(tipologiaTelefono utilizzo) {
+        this.utilizzo = utilizzo;
+    }
+
+    //Permette di incrementare il saldo dell'utente
+    public void ricaricaSaldo(double quantita) {
+        //Incrementare il saldo della quantita' richiesta
+        this.saldo += quantita;
+    }
+    /*Decrementa il saldo del contatto.
+     * Se il valore da decrementare e' maggiore del saldo rimasto allora il saldo rimane nullo
+     * Il metodo ritorna la spesa effettuata veramente tenendo conto del salto rimasto precedentemente
+     */
+    public double effettuaSpesa(double spesa) {
+        //Se la spesa non eccede il saldo rimasto allora proseguire con il decremento
+        if(spesa < this.saldo)
+        {
+            this.saldo -= spesa;
+            //Ritornare il valore totale della spesa
+            return spesa;
+        }
+        //Altrimenti :
+        //Salvare il saldo rimasto
+        double saldoRimasto = this.saldo;
+        //Il saldo e' nullo
+        this.saldo = 0;
+        //Ritornare il saldo rimasto
+        return saldoRimasto;
+    }
 
     /*Permette la creazione di un contatto vuoto */
     public Contatto () {}
