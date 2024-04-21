@@ -1,6 +1,50 @@
 import java.util.Scanner;
 
 public class Tools {
+    /*Compara due stringhe utilizzando l'ordine alfabetico 
+     * Ritorna un valore negativo se la prima e' minore della seconda;
+     * un valore positivo se la prima e' maggiore della seconda;
+     * un valore nullo se le due stringhe sono uguali.
+    */
+    public static int compareString(String firstCompare, String secondCompare) {
+        //Variabile che contiene la dimensione della stringa piu piccola
+        int lowerLength;
+        if(firstCompare.length() < secondCompare.length())
+            lowerLength = firstCompare.length();
+        else
+            lowerLength = secondCompare.length();
+
+        //Iterare in tutti i caratteri della stringa piu corta
+        for(int currentChar = 0; currentChar < lowerLength; currentChar++)
+        {
+            /* Se viene trovato un carattere diverso, ritornare dal metodo un valore
+             * minore di 0 se il primo e' minore del secondo, altrimenti
+             * un valore maggiore di 0 se il primo e' maggiore del secondo parametro passato.
+            */
+            if(firstCompare.charAt(currentChar) < secondCompare.charAt(currentChar))
+                return -1;
+            else if(firstCompare.charAt(currentChar) > secondCompare.charAt(currentChar))
+                return 1;
+            //Se i due caratteri sono uguali continuare a cercare fino a quando non si raggiunge un carattere differente
+        }
+
+        //Se fino alla lunghezza della stringa piu' corta tutti i caratteri delle due stringhe sono uguali,
+        //Se le due stringhe sono di lunghezza diversa:
+        if(firstCompare.length() != secondCompare.length())
+        {
+            /*Ritornare un valore positivo o negativo in base alla stringa di lunghezza maggiore 
+                * viene ritenuta maggiore la stringa di dimensione maggiore
+            */
+            if(firstCompare.length() > secondCompare.length())
+                return 1;
+            else if(firstCompare.length() < secondCompare.length())
+                return -1;
+        }
+
+        //Altrimenti se le due stringhe sono di dimensione uguale allora sono uguali
+        return 0;
+    }
+
     /*Stampa e gestisce a schermo un menu, ritornando il valore selezionato dall'utente */
     public static int menu(String[] opzioni, Scanner keyboard) {
         //Contiene la selezione
@@ -56,26 +100,38 @@ public class Tools {
      * Se il valore inserito dall'utente non e' numerico o non e' compreso nel range specificato, allora ripetere l'inserimento.
      * Prima di ogni inserimento stampa una stringa che viene passata tramite parametro prima di ogni inserimento.
      * Altri due parametri booleani definiscono se utilizzare il limite minimo e il limite massimo, impostarli a falsi se i limiti non vanno utilizzati
-     * Se il limite minimo supera il limite massimo il limite minimo viene ignorato
+     * Se il limite minimo supera il limite massimo il limite minimo viene ignorato.
+     * Al termine della richiesta dell'utente il metodo stampa una richiesta di uscita, con una stringa che se l'utente immette il programma esce.
+     * Se l'utente inserisce la stringa di uscita, il metodo ritorna un valore minore del valore minimo definito.
      */
     public static int getUserInput(int min, int max, String userRequest, Scanner keyboard, boolean limiteMinimo, boolean limiteMassimo) {
+        //Stringa da immettere perche' l'inserimento si termini
+        final String termineInserimento = "exit";
         //Viene impostata a vero quando il valore inserito non e' valido, porta alla ripetizione dell'inserimento
         boolean valoreNonValido;
         //Se il valore minimo e' maggiore del massimo allora ignorare il limite minimo
         limiteMinimo = min > max;
         
-        //Contiene l'input dell'utente
+        //Contiene l'input dell'utente nei due formati
+        String userInputStr;
         int userInput = 0;
         do {
             //Reimpostare la variabile di valore non valido
             valoreNonValido = false;
 
             //Richiedere all'utente il valore utilizzando la stringa passata come metodo
+            System.out.println("Inserire '" + termineInserimento + "' per uscire.");
             System.out.print(userRequest);
 
-            //Richiedere l'input
+            //Richiedere l'input all'utente
+            userInputStr = keyboard.next();
+            //Se l'utente ha inserito la stringa di termine del programma allora uscire
+            if(userInputStr.toLowerCase().equals(termineInserimento))
+                //Ritornare dal metodo il valore che indica la terminazione dell'inserimento
+                return min - 1;
+            //Converto il valore stringa inserito dall'utente in formato numerico
             try {
-                userInput = keyboard.nextInt();
+                userInput = Integer.valueOf(userInputStr);
             } catch (Exception ex) {
                 //In caso di input non numerico inserito
                 System.out.println("Errore : il valore inserito deve essere di tipo numerico.");
