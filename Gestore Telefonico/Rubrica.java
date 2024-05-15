@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Rubrica {
     public static void main(String[] args) {
@@ -14,6 +16,8 @@ public class Rubrica {
             "Ordina contatti",
             "Effettua ricarica",
             "Effettua chiamata",
+            "Salva File",
+            "Carica da File",
             "Uscita"
         };
         //Contiene i contatti
@@ -82,6 +86,27 @@ public class Rubrica {
                 //Se l'utente ha richiesto la chiamata
                 case 8 : {
                     effettuaChiamata(rubrica, rubricaOccupied, keyboard);
+                    break;
+                }
+
+                //Se l'utente ha richiesto il salvataggio dei file
+                case 9 : {
+                    try {
+                        salvaFile("rubrica.csv", rubrica, rubricaOccupied);
+                    } catch(IOException exception) {
+                        System.out.println("Errore durante la scrittura su file");
+                        exception.printStackTrace();
+                    } finally {
+                        System.out.println("Scrittura del file eseguita correttamente");
+                    }
+                    
+                    System.out.println("Premere INVIO per continuare...");
+                    keyboard.nextLine();
+                    break;
+                }
+
+                //Se l'utente ha richiesto il caricamento da file
+                case 10 : {
                     break;
                 }
 
@@ -187,7 +212,7 @@ public class Rubrica {
                 System.out.println("Stampa di tutti i contatti :");
                 //Iterare in tutti i contatti per iterare
                 for(int contatto = 0; contatto < rubricaOccupied; contatto++)
-                    System.out.println("=== Contatto numero " + (contatto + 1) + " ===\n" + rubrica[contatto].anagrafica());
+                    System.out.println("=== Contatto numero " + (contatto + 1) + " ===\n" + rubrica[contatto].toString());
                 System.out.println("=== TERMINE LISTA ===");
             } else { //Altrimenti procedere con l'eliminazione
                 //Creare un nuovo contatto contenente nome e cognome specificati per la comparazione
@@ -249,7 +274,7 @@ public class Rubrica {
                 System.out.println("Stampa di tutti i contatti :");
                 //Iterare in tutti i contatti per iterare
                 for(int contatto = 0; contatto < rubricaOccupied; contatto++)
-                    System.out.println("=== Contatto numero " + (contatto + 1) + " ===\n" + rubrica[contatto].anagrafica());
+                    System.out.println("=== Contatto numero " + (contatto + 1) + " ===\n" + rubrica[contatto].toString());
                 System.out.println("=== TERMINE LISTA ===");
             } else { //Se e' stato selezionato un contatto da visualizzare
                 //Se la modalita' specificata e' quella della modifica del numero di telefono
@@ -306,12 +331,12 @@ public class Rubrica {
             System.out.println("Stampa di tutti i contatti salvati :");
             //Iterare in tutti i contatti per iterare
             for(int contatto = 0; contatto < rubricaOccupied; contatto++)
-                System.out.println("=== Contatto numero " + (contatto + 1) + " ===\n" + rubrica[contatto].anagrafica());
+                System.out.println("=== Contatto numero " + (contatto + 1) + " ===\n" + rubrica[contatto].toString());
             System.out.println("=== TERMINE LISTA ===");
         } else { //Altrimenti se e' stato selezionato un contatto specifico
             //Stampare in output il contenuto dell'elemento richiesto
             System.out.println("Anagrafica utente numero " + contactNumber + ":");
-            System.out.println(rubrica[contactNumber - 1].anagrafica());
+            System.out.println(rubrica[contactNumber - 1].toString());
         }
 
         //Attendere per fare in modo che l'utente possa leggere i dati
@@ -386,7 +411,7 @@ public class Rubrica {
                 System.out.println("Stampa di tutti i contatti salvati :");
                 //Iterare in tutti i contatti per iterare
                 for(int contatto = 0; contatto < rubricaOccupied; contatto++)
-                    System.out.println("=== Contatto numero " + (contatto + 1) + " ===\n" + rubrica[contatto].anagrafica());
+                    System.out.println("=== Contatto numero " + (contatto + 1) + " ===\n" + rubrica[contatto].toString());
                 System.out.println("=== TERMINE LISTA ===");
             } else numeroContattoInserito = true; //Altrimenti uscire dal ciclo
         } while(!numeroContattoInserito);
@@ -436,7 +461,7 @@ public class Rubrica {
                 System.out.println("Stampa di tutti i contatti salvati :");
                 //Iterare in tutti i contatti per iterare
                 for(int contatto = 0; contatto < rubricaOccupied; contatto++)
-                    System.out.println("=== Contatto numero " + (contatto + 1) + " ===\n" + rubrica[contatto].anagrafica());
+                    System.out.println("=== Contatto numero " + (contatto + 1) + " ===\n" + rubrica[contatto].toString());
                 System.out.println("=== TERMINE LISTA ===");
             } else numeroContattoInserito = true; //Altrimenti uscire dal ciclo
         } while(!numeroContattoInserito);
@@ -474,5 +499,37 @@ public class Rubrica {
         //Attendere per dare il tempo all'utente di visualizzare i dati
         System.out.println("Premere INVIO per continuare");
         keyboard.nextLine();
+    }
+
+    /*Il metodo salva la rubrica su un file la cui posizione viene specificata
+     * dalla stringa passata al metodo.
+     */
+    private static void salvaFile(String path, Contatto[] rubrica, int rubricaSize) throws IOException {
+        //Istanziare la stream per la scrittura in output dei dati su file
+        FileWriter fileOutput = new FileWriter(path);
+
+        try {
+            //Nella prima riga, scrivere i nomi delle variabili
+            fileOutput.write("Numero Contatto;Nome;Cognome;Numero di telefono;Utilizzo telefono\r\n");
+        } catch(IOException exception) {
+            fileOutput.close();
+            throw exception;
+        }
+
+        //Iterare in tutti gli elementi occupati della rubrica
+        for(int currentElement = 0; currentElement < rubricaSize; currentElement++) {
+            try { //Scrivere il numero del contatto e i suoi dati
+                fileOutput.write(currentElement + ";" + rubrica[currentElement].toCSVString() + "\r\n");
+            } catch(IOException exception) {
+                fileOutput.close();
+                throw exception;
+            }
+        }
+
+        //Svuotare il buffer
+        fileOutput.flush();
+
+        //Chiudere il file
+        fileOutput.close();
     }
 }

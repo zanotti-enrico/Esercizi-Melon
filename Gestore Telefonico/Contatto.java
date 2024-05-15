@@ -79,9 +79,14 @@ public class Contatto {
         this.cognome = _cognome;
     }
 
-    /*Ritorna una stringa contenente i dati anagrafici dell'utente*/
-    public String anagrafica() {
+    @Override
+    public String toString() {
         return String.format("Nome : %s\nCognome : %s\nNumero di telefono : '%s'\nUtilizzo telefono : %s", nome, cognome, numeroTelefono, utilizzo.toString());
+    }
+
+    /*Ritorna una stringa appropriata per la scrittura del contatto su un file .csv */
+    public String toCSVString() {
+        return String.format("%s;%s;%s;%s", nome, cognome, numeroTelefono, utilizzo.toString());
     }
 
     /*Permette l'inserimento dei dati anagrafici
