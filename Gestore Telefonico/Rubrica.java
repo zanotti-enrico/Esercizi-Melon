@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.io.FileWriter;
+import java.io.FileReader;
 import java.io.IOException;
 
 public class Rubrica {
@@ -96,8 +97,6 @@ public class Rubrica {
                     } catch(IOException exception) {
                         System.out.println("Errore durante la scrittura su file");
                         exception.printStackTrace();
-                    } finally {
-                        System.out.println("Scrittura del file eseguita correttamente");
                     }
                     
                     System.out.println("Premere INVIO per continuare...");
@@ -107,6 +106,21 @@ public class Rubrica {
 
                 //Se l'utente ha richiesto il caricamento da file
                 case 10 : {
+                    //Richiedere all'utente la posizione del file da caricare
+                    System.out.println("Inserire la posizione del file da cui caricare i dati:");
+                    String path = keyboard.nextLine();
+                    //Caricare nell'array della rubrica i dati presi da file
+                    try {
+                        rubrica = caricaFile(path);
+                        rubricaOccupied = rubrica.length;
+                    } catch(IOException exception) {
+                        //Nel caso ci sia un errore durante la lettura da file stamparlo
+                        System.out.println("Errore durante la lettura da file:");
+                        exception.printStackTrace();
+                    }
+
+                    System.out.println("Premere INVIO per continuare...");
+                    keyboard.nextLine();
                     break;
                 }
 
@@ -510,7 +524,7 @@ public class Rubrica {
 
         try {
             //Nella prima riga, scrivere i nomi delle variabili
-            fileOutput.write("Numero Contatto;Nome;Cognome;Numero di telefono;Utilizzo telefono\r\n");
+            fileOutput.write("Numero Contatto;Nome;Cognome;Numero di telefono;Utilizzo telefono;Saldo contatto\r\n");
         } catch(IOException exception) {
             fileOutput.close();
             throw exception;
@@ -532,4 +546,62 @@ public class Rubrica {
         //Chiudere il file
         fileOutput.close();
     }
+
+    /*Passata al metodo la stringa contenente la posizione del file da caricare, ritorna l'array di contatti
+     * contenuti nel file richiesto, l'array ritornato e' sempre pieno.
+     * Nel caso venga incontrato un errore durante la lettura, viene lanciata un'eccezione.
+     */
+    private static Contatto[] caricaFile(String path) throws IOException {
+        //Oggetto per la rappresentazione del file
+        FileReader file = new FileReader(path);
+        //Istanziamento dello scanner per la lettura dal file
+        Scanner reader = new Scanner(file);
+        //Nuovo array che contiene i dati letti da file
+        Contatto[] fileReading = new Contatto[16];
+        //Fino a quando la rubrica e' stata occupata
+        int fileReadingUtilised = 0;
+
+        //Saltare la prima riga del file
+        reader.nextLine();
+
+        //Utilizzo dello scanner per la lettura da file
+        String currentLine; //Contiene la stringa corrente letta da file
+        while(reader.hasNextLine()) {
+            //Leggere la prossima riga da file
+            currentLine = reader.nextLine();
+
+            //Separare la stringa in un vettore separato da virgole
+            String[] singleElements = currentLine.split(";");
+            //Creare un nuovo oggetto contatto che contiene i dati ricavati da file
+            Contatto newContact = new Contatto(singleElements[1], singleElements[2], singleElements[3], singleElements[4], singleElements[5]);
+
+            //Salvare il nuovo contatto nell'ultimo elemento della rubrica
+            fileReading[fileReadingUtilised] = newContact;
+            //Incrementare la dimensione della rubrica
+            fileReadingUtilised++;
+            //Se la dimensione della rubrica raggiunge il temine dell'array, raddoppiare la dimensione dell'array
+            if(fileReadingUtilised >= fileReading.length)
+            {
+                //Creare un nuovo array
+                Contatto[] fileReadingExpanded = new Contatto[fileReading.length * 2];
+                //Copiare i contenuti del vecchio array nel nuovo array
+                for(int currentElement = 0; currentElement < fileReading.length; currentElement++)
+                    fileReadingExpanded[currentElement] = fileReading[currentElement];
+                //Copiare il nuovo array espanso nel vecchio array
+                fileReading = fileReadingExpanded;
+            }
+        }
+
+        //Chiudere il lettore del file
+        reader.close();
+
+        //Diminuire la dimensione dell'array fino a dove esso e' occupato in modo che sia pieno
+        Contatto[] rubricaFull = new Contatto[fileReadingUtilised];
+        //Copiare i dati nel nuovo array
+        for(int currentElement = 0; currentElement < fileReadingUtilised; currentElement++)
+            rubricaFull[currentElement] = fileReading[currentElement];
+        //Ritornare il nuovo array
+        return rubricaFull;
+    }
 }
+ 

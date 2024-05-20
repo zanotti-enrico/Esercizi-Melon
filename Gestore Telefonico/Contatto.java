@@ -78,6 +78,15 @@ public class Contatto {
         this.nome = _nome;
         this.cognome = _cognome;
     }
+    //Permette l'inserimento di tutti i dati del contatto tramite stringa
+    public Contatto (String _nome, String _cognome, String _numeroTelefono, String _tipologiaTelefono, String saldo)
+    {
+        this.nome = _nome;
+        this.cognome = _cognome;
+        this.numeroTelefono = _numeroTelefono;
+        this.utilizzo = tipologiaTelefono.valueOf(_tipologiaTelefono);
+        this.saldo = Double.valueOf(saldo);
+    }
 
     @Override
     public String toString() {
@@ -86,7 +95,7 @@ public class Contatto {
 
     /*Ritorna una stringa appropriata per la scrittura del contatto su un file .csv */
     public String toCSVString() {
-        return String.format("%s;%s;%s;%s", nome, cognome, numeroTelefono, utilizzo.toString());
+        return String.format("%s;%s;%s;%s;%s", this.nome, this.cognome, this.numeroTelefono, this.utilizzo.toString(), String.valueOf(this.saldo));
     }
 
     /*Permette l'inserimento dei dati anagrafici
