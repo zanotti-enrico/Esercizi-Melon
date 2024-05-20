@@ -524,7 +524,7 @@ public class Rubrica {
 
         try {
             //Nella prima riga, scrivere i nomi delle variabili
-            fileOutput.write("Numero Contatto;Nome;Cognome;Numero di telefono;Utilizzo telefono;Saldo contatto\r\n");
+            fileOutput.write(rubricaSize + " Contatti;Nome;Cognome;Numero di telefono;Utilizzo telefono;Saldo contatto\r\n");
         } catch(IOException exception) {
             fileOutput.close();
             throw exception;
@@ -556,13 +556,11 @@ public class Rubrica {
         FileReader file = new FileReader(path);
         //Istanziamento dello scanner per la lettura dal file
         Scanner reader = new Scanner(file);
+        //Leggere la prima riga del file e salvare il primo numero in esso (contiene il numero di elementi) e convertirlo in intero
+        int elementAmount = Integer.valueOf(reader.nextLine().split(" ")[0]);
         //Nuovo array che contiene i dati letti da file
-        Contatto[] fileReading = new Contatto[16];
-        //Fino a quando la rubrica e' stata occupata
-        int fileReadingUtilised = 0;
-
-        //Saltare la prima riga del file
-        reader.nextLine();
+        Contatto[] fileReading = new Contatto[elementAmount];
+        int currentElement = 0; //Contiene l'elemento corrente letto dal file
 
         //Utilizzo dello scanner per la lettura da file
         String currentLine; //Contiene la stringa corrente letta da file
@@ -574,34 +572,14 @@ public class Rubrica {
             String[] singleElements = currentLine.split(";");
             //Creare un nuovo oggetto contatto che contiene i dati ricavati da file
             Contatto newContact = new Contatto(singleElements[1], singleElements[2], singleElements[3], singleElements[4], singleElements[5]);
-
-            //Salvare il nuovo contatto nell'ultimo elemento della rubrica
-            fileReading[fileReadingUtilised] = newContact;
-            //Incrementare la dimensione della rubrica
-            fileReadingUtilised++;
-            //Se la dimensione della rubrica raggiunge il temine dell'array, raddoppiare la dimensione dell'array
-            if(fileReadingUtilised >= fileReading.length)
-            {
-                //Creare un nuovo array
-                Contatto[] fileReadingExpanded = new Contatto[fileReading.length * 2];
-                //Copiare i contenuti del vecchio array nel nuovo array
-                for(int currentElement = 0; currentElement < fileReading.length; currentElement++)
-                    fileReadingExpanded[currentElement] = fileReading[currentElement];
-                //Copiare il nuovo array espanso nel vecchio array
-                fileReading = fileReadingExpanded;
-            }
+            //Salvare il nuovo contatto nell'elemento della rubrica, incremntando l'iteratore
+            fileReading[currentElement++] = newContact;
         }
 
         //Chiudere il lettore del file
         reader.close();
 
-        //Diminuire la dimensione dell'array fino a dove esso e' occupato in modo che sia pieno
-        Contatto[] rubricaFull = new Contatto[fileReadingUtilised];
-        //Copiare i dati nel nuovo array
-        for(int currentElement = 0; currentElement < fileReadingUtilised; currentElement++)
-            rubricaFull[currentElement] = fileReading[currentElement];
-        //Ritornare il nuovo array
-        return rubricaFull;
+        return fileReading;
     }
 }
  
