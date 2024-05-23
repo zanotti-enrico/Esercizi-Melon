@@ -1,0 +1,1 @@
+- Aggiunto un controllo per la sostituzione di soli numeri pari

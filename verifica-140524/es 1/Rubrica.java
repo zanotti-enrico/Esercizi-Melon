@@ -174,7 +174,7 @@ public class Rubrica {
                             "Cognome",
                             "Numero di telefono",
                             "Tipologia numero di telefono",
-                            "Contatto Nascosto" //Mostrato soltanto se il menu nascosto e' abilitato
+                            "Visibilita'" //Mostrato soltanto se il menu nascosto e' abilitato
                         };
                     } else {
                         editMenuContents = new String[]{

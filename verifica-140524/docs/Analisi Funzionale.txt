@@ -1,0 +1,89 @@
+Menu principale all’avvio del programma:
+	Titolo : “Gestione rubrica”
+	[1] : Aggiungi contatto
+	[2] : Ricerca contatto
+	[3] : Rimuovi contatti
+	[4] : Modifica contatto
+	[5] : Visualizza contatti
+	[6] : Riordina contatti
+	[7] : Salva su file
+	[8] : Carica da file
+	[9] : Esci
+	[10] : Sblocca contatti nascosti (elemento del menu non mostrato, se l’utente inserisce questo numero il programma richiede la password per entrare nell’altro menu) 
+Menu “Segreto”
+	Titolo : “Gestioe rubrica - menu nascosto”
+	[1] : Aggiungi contatto
+	[2] : Ricerca contatto
+	[3] : Rimuovi contatti
+	[4] : Modifica contatto
+	[5] : Visualizza contatti
+	[6] : Riordina contatti
+	[7] : Salva su file
+	[8] : Carica da file
+	[9] : Blocca contatti nascosti
+	[10] : Modifica password menu nascosto
+	[11] : Esci
+Elementi del menu:
+	Aggiungi contatto:
+		Richiesta dati:
+			“Inserire il nome : ”
+			“Inserire il cognome : ”
+			“Inserire il numero di telefono : ”
+			“Inserire la tipologia di contatto : ”
+		Visualizza un messaggio di errore in caso di dati non validi inseriti e richiede un nuovo inserimento del dato errato
+		Se il menu nascosto è abilitato:
+			“Nascondere il contatto [S]?”
+			Se l’utente inserisce S viene contrassegnato come nascosto, altrimenti no
+		Visualizza singolarmente il nuovo contatto aggiunto
+	Ricerca contatto:
+		Richiesta all’utente:
+			“Inserire il nome :”
+			“Inserire il cognome :”
+			“Inserire il numero di telefono :”
+		Se uno di questi campi viene lasciato vuoto allora non viene utilizzato per la ricerca
+		Il programma mostra una lista di contatti che contengono in parte o per intero i dati inseriti (Esempio: l’utente ha ricercato il nome “as” e il programma mostra una lista contenente i contatti con nome “Asia”, “Assunta”, …), il numero di telefono deve essere inserito per intero e trovato per intero nel contatto, se non viene trovato nessun contatto con i criteri ricercati o nessun dato viene inserito, oppure dati invalidi viene mostrato un messaggio di errore 
+		Se viene trovato un contatto contrassegnato come nascosto viene visualizzato solamente se ci si trova nel menu nascosto
+	Rimuovi contatti:
+		Menu a selezione multipla
+			Stampa una lista dei contatti nella rubrica (solo contatti visibili)
+			Richiedi una selezione multipla:
+				[X]
+				[ ]
+				[X]
+				[X]
+				etc…
+		Rimuovi i contatti selezionati
+	Modifica contatto
+		Menu con lista dei contatti visibili, richiedendo il contatto da modificare
+		Menu a scelta multipla da modificare
+			Titolo : “Modificare : Nome - Cognome - Numero di telefono” (dati del contatto selezionato)
+			[1] Modifica nome
+			[2] Modifica cognome
+			[3] Modifica numero di telefono
+			[4] Modifica tipologia di numero di telefono
+			[5] Modifica visibilita' : Mostrato soltanto se il menu nascosto e' abilitato
+			[6] Esci
+		Permette il reinserimento di questi dati, esce dalla selezione del contatto quando viene specificato
+	Visualizza contatti
+		Stampa una lista dei contatti salvati
+			“Contatto X :
+			Nome : X
+			Cognome : X
+			Numero di telefono : X...”
+			…
+			“Premere INVIO per uscire”
+	Riordina contatti
+		Riordina i contatti ed esce
+		“Premere INVIO per uscire”
+	Sblocca contatti nascosti
+		Richiesta utente : “Inserire password : ”
+		Apre il menu nascosto
+	Blocca contatti nascosti
+		Richiesta utente : “Sei sicuro di voler uscire dal menu nascosto [S]?”
+		Se l’utente inserisce “S” ritorna al menu principale
+	Modifica password menu nascosto
+		Richiesta utente : “Inserire nuova password :”
+		Modifica la password
+	Esci
+		“Premere INVIO per continuare”
+		Esce dal programma

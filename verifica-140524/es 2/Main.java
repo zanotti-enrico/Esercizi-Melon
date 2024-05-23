@@ -77,7 +77,6 @@ public class Main {
             //Ricercare la nuova posizione dell'indice
             int newIndex = -1;
             //Iterazione dalla posizione dell'indice + 1 al penultimo elemento dell'array per la ricerca del prossimo elemento pari
-    
             for(int newIndexSearch = substituteIndex + 1; newIndexSearch < input.length - 1; newIndexSearch++)
             {
                 if(input[newIndexSearch] % 2 == 0) //Se viene trovato un elemento pari
@@ -98,11 +97,11 @@ public class Main {
                 //Contiene il valore più piccolo nell'array disordinato e la sua posizione
                 int minValue = input[substituteIndex];
                 int minValuePosition = substituteIndex;
-                //Ricerca del valore più piccolo, fermandosi al penultimo elemento dell'array
+                //Ricerca del valore più piccolo pari, fermandosi al penultimo elemento dell'array
                 for(int search = substituteIndex; search < input.length - 1; search++)
                 {
-                    //Se viene trovato un nuovo valore minimo
-                    if(input[search] < minValue) {
+                    //Se viene trovato un nuovo valore minimo pari
+                    if(input[search] < minValue && input[search] % 2 == 0) {
                         minValue = input[search]; //Aggiornare il valore minimo
                         minValuePosition = search; //Aggiornare la posizione
                     }

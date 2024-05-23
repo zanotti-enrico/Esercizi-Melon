@@ -3,19 +3,15 @@ Analisi tecnica:
 - Metodi get e set per le variabili
 - Nomi in inglese
 - Booleana per determinare se il contatto é nascosto o meno
-- Se nel menu nascosto, permettere il nascondimento o la visualizzazione del contatto con l'opzione di modifica
 - Aggiunto lo scanner come elemento passato ai due metodi del menu in utility
-- Metodo per il riempimento del contatto utilizzando lo scanner
 - Menu con nascondimento di un elemento specifico
 - Gestione IO file con salvataggio e caricamento
 - Metodo che permette l'inserimento dei dati nella classe Contact
-- Variabile per quanto la rubrica e' stata occupata
+- Iteratore di occupazione del vettore della rubrica
 - Due array di stringhe contenenti i contenuti del menu segreto e del menu normale
 - Metodo edit nella classe contact
 - Effettua un controllo se il contatto non esiste gia'
 
 Analisi funzionale:
-- La visualizzazione dei contatti permette di visualizzarli tutti senza chiedere quale mostrare
-- La modifica e l'eliminazione di un contatto mostra un menu con una lista di contatti che chiede quale contatto modificare
 - La stampa dei contatti viene fatta per intero non utilizzando la stampa a riga singola come viene mostrato nell'analisi funzionale iniziale
-- Modifica del metodo di modifica del contatto, richiede che dati modificare e li richiede all'utente
+- Se nel menu nascosto, permettere il nascondimento o la visualizzazione del contatto con l'opzione di modifica
