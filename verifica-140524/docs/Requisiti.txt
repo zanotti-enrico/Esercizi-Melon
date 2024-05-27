@@ -1,0 +1,3 @@
+Classe Utility per i metodi di menu a scelta singola o multipla pubblici
+Classe Contact per il salvataggio delle informazioni relative ad un contatto
+Classe Rubrica per l'encapsulamento in un oggetto dell'array di contatti, ha metodi privati utilizzati nel suo main per la modifica dell'array dei contatti

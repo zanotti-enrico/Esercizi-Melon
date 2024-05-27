@@ -1,0 +1,40 @@
+Classe Rubrica
+	private final String[] normalMenu : contiene i dati da stampare nel menu principale se impostato il menu normale
+	private final Stirng[] secretMenu : contiene i dati da stampare nel menu principale se impostato il menu nascosto
+	private boolean secretMenuEnabled : impostata a vero se il menu mostrato e’ quello segreto
+	private String secretMenuPsw : Predefinito 1234
+	private Contact[] contactList : Array di contatti della rubrica non pieno
+	private int contactListOccupied : Contiene fino a dove la rubrica e' riempita
+	public void main()
+	private void addContact(Contact nuovoContatto) : Aggiunge il contatto nella rubrica
+	private void removeContact(int[] indexes) : Rimuove dalla rubrica i contatti puntati dagli indici nell'array passato
+	private private private private Contact[] findContacts(String firstName, String lastName, long phoneNumber) : Effettua una ricerca in base ai parametri passati e ritorna i contatti che la soddisfano
+	private void printContacts() : Stampa i contatti salvati in rubrica
+	private private void printContactArray(Contact[] contacts) : Stampa un array di elementi contatto
+	private void exists(Contact search) : Se un contatto si trova in rubrica, ritorna vero, altrimenti ritorna falso
+	private void sortContacts() : Riordina la rubrica, per riordinare utilizza in ordine se il contatto e' nascosto o meno, cognome e nome
+	private String[] contactListStringArray(Contact[] input, int inputLen, String appendToStart) : Converte un array di contatti a un array di stringhe a singola linea, per l'utilizzo coi menu
+	private saveToFile(String output) : Salva il contenuto della rubrica nel file specificato in output
+	private loadFromFile(String output) : Legge dal file specificato il contenuto, salvandolo in rubrica
+Classe Utility
+	public int menu(String[] menuContents, Scanner userInput, int hiddenEntry) : Mostra un menu da cui l'utente puo' effettuare scelta singola
+	public int[] multipleSelectionMenuBool(String[menuContents], Scanner userInput) : Menu da cui l'utente puo' effettuare scelte multiple
+	public boolean[] multipleSelectionMenuInt(String[menuContents], Scanner userInput) : Menu da cui l'utente puo' effettuare scelte multiple, ritorna un vettore degli indici degli elementi salvati
+Classe Contact
+	private String firstName : Con apposito set e get
+	private String lastName : Con apposito set e get
+	private long phoneNumber : Con apposito set e get
+	private enum contactType : Con apposito set e get
+		Casa
+		Cellulare
+		Lavoro
+
+	public constructor(String _firstName, String _lastName, long _phoneNumber, String _type)
+	public constructor(String _firstName, String _lastName, long _phoneNumber, String _type, boolean _hidden)
+
+	public edit(Scanner userInput, boolean[] flags) : Viene passato uno scanner per l'input e l'array di booleane contiene gli elementi da modificare, in base all'iteratore e al valore, vengono modificati certi elementi
+	public compareTo(Contact compare)
+	public equals(Contact compare)
+	public toString()
+	public toCompactString() : Utilizzato per la stampa dei dati su singola linea
+	public toCSVString() : Utilizzato per la stampa dei dati su file
