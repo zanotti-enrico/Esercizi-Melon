@@ -23,6 +23,8 @@ public class Rubrica {
         };
         //Contiene i contatti
         Contatto[] rubrica = new Contatto[16];
+        //Registro chiamate
+        Chiamata[] registroChiamate = new Chiamata[16];
         int rubricaOccupied = 0; //Fino a che punto l'array rubrica e' stato riempito
 
         //Continuare l'esecuzione fino al termine del programma
